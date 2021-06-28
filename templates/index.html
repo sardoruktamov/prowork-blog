@@ -66,6 +66,7 @@
 								<a href="{% url 'blog-detail' blog.slug %}"<h4 class="tm-gallery-title">{{blog.title | truncatechars:50}}</h4></a>
 								<p class="tm-gallery-description">{{blog.description | truncatechars:120}}</p>
 								<p class="tm-gallery-price">{{blog.created_at}}</p>
+								<p class="tm-gallery-price">{{blog.hashtegs}}</p>
 							</figcaption>
 						</figure>
 					</article>
@@ -83,32 +84,28 @@
 			</div>
 		</main>
 		<div class="container">
-      <nav class="blog-pagination justify-content-center d-flex">
-        <ul class="pagination">
-            <li id="page-item">{% if blogs.has_previous %}
+        {% if blogs.has_previous %}
                 <a href="?page={{blogs.previous_page_number}}" class="page-link" aria-label="Previous">
                     <span aria-hidden="true">
                         <span class="lnr lnr-chevron-left"><<</span>
                     </span>
                 </a>{% endif %}
-            </li>
+        
             {% for i in blogs.paginator.page_range %}
                 {% if blogs.number == i %}
-                    <li id="page-item active" style="padding: 4px 12px; color: white; background: #84c1c5"><span>{{ i }} </span></li>
+                <span id="page-item active" style="padding: 4px 12px; color: white; background: #84c1c5">{{ i }} </span>
                 {% elif i > blogs.number|add:'-7' and i < blogs.number|add:'7' %}
-                <li id="page-item "><a href="?page={{i}}" class="page-link">{{i}}</a></li>
+                <a href="?page={{i}}"  id="page-item " class="page-link">{{i}}</a>
                 {% endif %}
             {% endfor %} 
-            <li id="page-item">{% if blogs.has_next %}
+            {% if blogs.has_next %}
                 <a href="?page={{blogs.next_page_number}}" class="page-link" aria-label="Next">
                     <span aria-hidden="true">
                         <span class="lnr lnr-chevron-right"> >> </span>
                     </span>
                 </a>{% endif %}
-            </li>
-        </ul>
+            
 			</div>
-    </nav>
 {% endblock content %}
 
 		
