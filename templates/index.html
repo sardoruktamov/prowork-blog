@@ -22,9 +22,9 @@
 						</div>
 						<nav class="col-md-6 col-12 tm-nav">
 							<ul class="tm-nav-ul">
-								<li class="tm-nav-li"><a href="index.html" class="tm-nav-link active">BARCHASI</a></li>
+								<li class="tm-nav-li"><a href="{% url 'home-view' %}" class="tm-nav-link active">BARCHASI</a></li>
                                 {% for cat in categories %}
-								<li class="tm-nav-li"><a href="about.html" class="tm-nav-link">{{cat.name}}</a></li>
+								<li class="tm-nav-li"><a href="{% url 'filter-category' cat.slug %}" class="tm-nav-link">{{cat.name}}</a></li>
                                 {% endfor %}
 							</ul>
 						</nav>	
@@ -41,16 +41,14 @@
 				<nav>
 					<ul>viloyatlar: 
 					{% for region in regions %}
-						<li class="tm-paging-item"><a href="#" class="tm-paging-link active">{{region}}</a></li>
+						<li class="tm-paging-item"><a href="{% url 'filter-region' region.slug %}" class="tm-paging-link active">{{region}}</a></li>
 					{% endfor %}
 					</ul>
 				</nav>
-			</div>
-			<div class="tm-paging-links">
 				<nav>
 					<ul>hashtegs:
 					{% for hashteg in hashtegs %}
-						<li class="tm-paging-item"><a href="#" class="tm-paging-link active">{{hashteg}}</a></li>
+						<li class="tm-paging-item"><a href="{% url 'filter-hashtegs' hashteg.slug %}" class="tm-paging-link active">{{hashteg}}</a></li>
 					{% endfor %}
 					</ul>
 				</nav>
@@ -59,130 +57,58 @@
 			<div class="row tm-gallery">
 				<!-- gallery page 1 -->
 				<div id="tm-gallery-page-pizza" class="tm-gallery-page">
+					{% if blogs %}
 					{% for blog in blogs %}
 					<article class="col-lg-3 col-md-4 col-sm-6 col-12 tm-gallery-item">
 						<figure>
 							<img src="{{blog.image.url}}" alt="Image" class="img-fluid tm-gallery-img" />
 							<figcaption>
-								<a href="{% url 'blog-detail' blog.id %}"<h4 class="tm-gallery-title">{{blog.title | truncatechars:50}}</h4></a>
+								<a href="{% url 'blog-detail' blog.slug %}"<h4 class="tm-gallery-title">{{blog.title | truncatechars:50}}</h4></a>
 								<p class="tm-gallery-description">{{blog.description | truncatechars:120}}</p>
 								<p class="tm-gallery-price">{{blog.created_at}}</p>
 							</figcaption>
 						</figure>
 					</article>
 					{% endfor %}
+					{% else %}
+						<figure>
+							<figcaption>
+								<h4 class="tm-gallery-title"> Post mavjud emas!</h4>
+							</figcaption>
+						</figure>
+					{% endif %}
 				</div> <!-- gallery page 1 -->
 				
-				<!-- gallery page 2 -->
-				<div id="tm-gallery-page-salad" class="tm-gallery-page hidden">
-					<article class="col-lg-3 col-md-4 col-sm-6 col-12 tm-gallery-item">
-						<figure>
-							<img src="{% static 'img/gallery/04.jpg' %}" alt="Image" class="img-fluid tm-gallery-img" />
-							<figcaption>
-								<h4 class="tm-gallery-title">Salad Menu One</h4>
-								<p class="tm-gallery-description">Proin eu velit egestas, viverra sapien eget, consequat nunc. Vestibulum tristique</p>
-								<p class="tm-gallery-price">$25</p>
-							</figcaption>
-						</figure>
-					</article>
-					<article class="col-lg-3 col-md-4 col-sm-6 col-12 tm-gallery-item">
-						<figure>
-							<img src="{% static 'img/gallery/03.jpg' %}" alt="Image" class="img-fluid tm-gallery-img" />
-							<figcaption>
-								<h4 class="tm-gallery-title">Second Title Salad</h4>
-								<p class="tm-gallery-description">Proin eu velit egestas, viverra sapien eget, consequat nunc. Vestibulum tristique</p>
-								<p class="tm-gallery-price">$30</p>
-							</figcaption>
-						</figure>
-					</article>
-					<article class="col-lg-3 col-md-4 col-sm-6 col-12 tm-gallery-item">
-						<figure>
-							<img src="{% static 'img/gallery/05.jpg' %}" alt="Image" class="img-fluid tm-gallery-img" />
-							<figcaption>
-								<h4 class="tm-gallery-title">Third Salad Item</h4>
-								<p class="tm-gallery-description">Proin eu velit egestas, viverra sapien eget, consequat nunc. Vestibulum tristique</p>
-								<p class="tm-gallery-price">$45</p>
-							</figcaption>
-						</figure>
-					</article>
-					<article class="col-lg-3 col-md-4 col-sm-6 col-12 tm-gallery-item">
-						<figure>
-							<img src="{% static 'img/gallery/01.jpg' %}" alt="Image" class="img-fluid tm-gallery-img" />
-							<figcaption>
-								<h4 class="tm-gallery-title">Superior Salad</h4>
-								<p class="tm-gallery-description">Proin eu velit egestas, viverra sapien eget, consequat nunc. Vestibulum tristique</p>
-								<p class="tm-gallery-price">$50</p>
-							</figcaption>
-						</figure>
-					</article>
-				</div> <!-- gallery page 2 -->
 				
-				<!-- gallery page 3 -->
-				<div id="tm-gallery-page-noodle" class="tm-gallery-page hidden">
-					<article class="col-lg-3 col-md-4 col-sm-6 col-12 tm-gallery-item">
-						<figure>
-							<img src="{% static 'img/gallery/08.jpg' %}" alt="Image" class="img-fluid tm-gallery-img" />
-							<figcaption>
-								<h4 class="tm-gallery-title">Noodle One</h4>
-								<p class="tm-gallery-description">Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p>
-								<p class="tm-gallery-price">$12.50</p>
-							</figcaption>
-						</figure>
-					</article>
-					<article class="col-lg-3 col-md-4 col-sm-6 col-12 tm-gallery-item">
-						<figure>
-							<img src="{% static 'img/gallery/07.jpg' %}" alt="Image" class="img-fluid tm-gallery-img" />
-							<figcaption>
-								<h4 class="tm-gallery-title">Noodle Second</h4>
-								<p class="tm-gallery-description">Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p>
-								<p class="tm-gallery-price">$15.50</p>
-							</figcaption>
-						</figure>
-					</article>
-					<article class="col-lg-3 col-md-4 col-sm-6 col-12 tm-gallery-item">
-						<figure>
-							<img src="{% static 'img/gallery/06.jpg' %}" alt="Image" class="img-fluid tm-gallery-img" />
-							<figcaption>
-								<h4 class="tm-gallery-title">Third Soft Noodle</h4>
-								<p class="tm-gallery-description">Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p>
-								<p class="tm-gallery-price">$20.50</p>
-							</figcaption>
-						</figure>
-					</article>
-					<article class="col-lg-3 col-md-4 col-sm-6 col-12 tm-gallery-item">
-						<figure>
-							<img src="{% static 'img/gallery/05.jpg' %}" alt="Image" class="img-fluid tm-gallery-img" />
-							<figcaption>
-								<h4 class="tm-gallery-title">Aliquam sagittis</h4>
-								<p class="tm-gallery-description">Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p>
-								<p class="tm-gallery-price">$30.25</p>
-							</figcaption>
-						</figure>
-					</article>
-					<article class="col-lg-3 col-md-4 col-sm-6 col-12 tm-gallery-item">
-						<figure>
-							<img src="{% static 'img/gallery/04.jpg' %}" alt="Image" class="img-fluid tm-gallery-img" />
-							<figcaption>
-								<h4 class="tm-gallery-title">Maecenas eget justo</h4>
-								<p class="tm-gallery-description">Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p>
-								<p class="tm-gallery-price">$35.50</p>
-							</figcaption>
-						</figure>
-					</article>
-					<article class="col-lg-3 col-md-4 col-sm-6 col-12 tm-gallery-item">
-						<figure>
-							<img src="{% static 'img/gallery/03.jpg' %}" alt="Image" class="img-fluid tm-gallery-img" />
-							<figcaption>
-								<h4 class="tm-gallery-title">Quisque et felis eros</h4>
-								<p class="tm-gallery-description">Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p>
-								<p class="tm-gallery-price">$40.50</p>
-							</figcaption>
-						</figure>
-					</article>
-
-				</div> <!-- gallery page 3 -->
 			</div>
 		</main>
+		<div class="container">
+      <nav class="blog-pagination justify-content-center d-flex">
+        <ul class="pagination">
+            <li id="page-item">{% if blogs.has_previous %}
+                <a href="?page={{blogs.previous_page_number}}" class="page-link" aria-label="Previous">
+                    <span aria-hidden="true">
+                        <span class="lnr lnr-chevron-left"><<</span>
+                    </span>
+                </a>{% endif %}
+            </li>
+            {% for i in blogs.paginator.page_range %}
+                {% if blogs.number == i %}
+                    <li id="page-item active" style="padding: 4px 12px; color: white; background: #84c1c5"><span>{{ i }} </span></li>
+                {% elif i > blogs.number|add:'-7' and i < blogs.number|add:'7' %}
+                <li id="page-item "><a href="?page={{i}}" class="page-link">{{i}}</a></li>
+                {% endif %}
+            {% endfor %} 
+            <li id="page-item">{% if blogs.has_next %}
+                <a href="?page={{blogs.next_page_number}}" class="page-link" aria-label="Next">
+                    <span aria-hidden="true">
+                        <span class="lnr lnr-chevron-right"> >> </span>
+                    </span>
+                </a>{% endif %}
+            </li>
+        </ul>
+			</div>
+    </nav>
 {% endblock content %}
 
 		

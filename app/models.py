@@ -46,6 +46,7 @@ class Blog(TranslatableModel):
     slug = models.SlugField(max_length=255, unique=True)
 
     class Meta:
+        ordering = ['-created_at']
         verbose_name_plural = 'Blog'
 
     def __str__(self):
