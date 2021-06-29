@@ -1,9 +1,14 @@
 {% extends 'base.html' %}
+{% load i18n %} 
 {% load static %}
+
+{% get_current_language as LANGUGES_CODE %}
+{% get_available_languages as languages %}
 
 {% block title %}
     <title>Bizda dunyodagi eng so`ngi yangiliklar</title>
 {% endblock title %}
+
 
 {% block content %}
 <div class="container">
@@ -16,13 +21,38 @@
 						<div class="col-md-6 col-12">
 							<img src="{% static 'img/simple-house-logo.png' %}" alt="Logo" class="tm-site-logo" /> 
 							<div class="tm-site-text-box">
-								<h1 class="tm-site-title">Texnologiyalar Blogi</h1>
-								<h6 class="tm-site-description">Hozirgi zamonning eng so'ngi ma'lumotlari</h6>	
+							<ul class="list-group" id="list-group">
+    <li>
+                    <form action="{% url 'set_language' %}" method="post">{% csrf_token %}
+                        <input name="next" type="hidden" value="">
+                        <select name="language">
+                            {% get_current_language as LANGUAGE_CODE %}
+                            {% get_available_languages as LANGUAGES %}
+                            {% get_language_info_list for LANGUAGES as languages %}
+                            {% for language in languages %}
+                                <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %}
+                                        selected{% endif %}>
+                                    {{ language.name_local }} ({{ language.code }})
+                                </option>
+                            {% endfor %}
+                        </select>
+                        <input type="submit" value="Go">
+                    </form>
+                </li>
+				
+	</ul>
+	
+								<h1 class="tm-site-title">
+								{% trans 'Texnologiyalar Blogi' %}
+								
+								</h1>
+								
+								<h6 class="tm-site-description">{% trans 'Hozirgi zamonning eng songi malumotlari' %}</h6>	
 							</div>
 						</div>
 						<nav class="col-md-6 col-12 tm-nav">
 							<ul class="tm-nav-ul">
-								<li class="tm-nav-li"><a href="{% url 'home-view' %}" class="tm-nav-link active">BARCHASI</a></li>
+								<li class="tm-nav-li"><a href="{% url 'home-view' %}" class="tm-nav-link active">{% trans "BARCHASI" %}</a></li>
                                 {% for cat in categories %}
 								<li class="tm-nav-li"><a href="{% url 'filter-category' cat.slug %}" class="tm-nav-link">{{cat.name}}</a></li>
                                 {% endfor %}
@@ -39,7 +69,7 @@
 			
 			<div class="tm-paging-links">
 				<nav>
-					<ul>viloyatlar: 
+					<ul>{% trans "viloyatlar:" %} 
 					{% for region in regions %}
 						<li class="tm-paging-item"><a href="{% url 'filter-region' region.slug %}" class="tm-paging-link active">{{region}}</a></li>
 					{% endfor %}
@@ -74,7 +104,7 @@
 					{% else %}
 						<figure>
 							<figcaption>
-								<h4 class="tm-gallery-title"> Post mavjud emas!</h4>
+								<h4 class="tm-gallery-title"> {% trans "Post mavjud emas!" %}</h4>
 							</figcaption>
 						</figure>
 					{% endif %}
@@ -83,7 +113,8 @@
 				
 			</div>
 		</main>
-		<div class="container">
+		<section class="container">
+		
         {% if blogs.has_previous %}
                 <a href="?page={{blogs.previous_page_number}}" class="page-link" aria-label="Previous">
                     <span aria-hidden="true">
@@ -103,9 +134,10 @@
                     <span aria-hidden="true">
                         <span class="lnr lnr-chevron-right"> >> </span>
                     </span>
-                </a>{% endif %}
+                </a>
+			{% endif %}
             
-			</div>
+			</section>
 {% endblock content %}
 
 		

@@ -2,7 +2,6 @@ from django.db import models
 from parler.models import TranslatableModel, TranslatedFields
 from django.utils.translation import gettext_lazy as _
 
-
 class Regions(TranslatableModel):
     translation = TranslatedFields(
         name=models.CharField(max_length=255, blank=True, null=True, verbose_name=_('Name'))

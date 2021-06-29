@@ -33,8 +33,3 @@ class HashtagsAdmin(admin.ModelAdmin):
 @admin.register(PicturesFromTheBlog)
 class PicturesAdmin(admin.ModelAdmin):
     list_display = ('owner', )
-
-# class PostAdmin(admin.ModelAdmin):
-#     prepopulated_fields = {"slug":("title",)}
-
-# admin.site.register(Post, PostAdmin)
