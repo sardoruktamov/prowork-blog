@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load i18n %} 
 {% load static %}
+{% load app_tags %}
 
 {% get_current_language as LANGUGES_CODE %}
 {% get_available_languages as languages %}
@@ -11,6 +12,8 @@
 
 
 {% block content %}
+{% url 'index' as index %}
+
 <div class="container">
 	<!-- Top box -->
 		<!-- Logo & Site Name -->
@@ -22,6 +25,8 @@
 							<img src="{% static 'img/simple-house-logo.png' %}" alt="Logo" class="tm-site-logo" /> 
 							<div class="tm-site-text-box">
 							<ul class="list-group" id="list-group">
+   
+   
     <li>
                     <form action="{% url 'set_language' %}" method="post">{% csrf_token %}
                         <input name="next" type="hidden" value="">
@@ -39,6 +44,13 @@
                         <input type="submit" value="Go">
                     </form>
                 </li>
+				{% comment %} <ul class="list-group" id="list-group">
+					{% for language , title in languages %}
+						<li id="en" onclick="changeSelect('En')" {% if language == LANGUGES_CODE %}{% endif %}>
+							{% get_url_tag request=request lang=language as url %}<a href="{{ url }}">{{ language }}{{ title }}</a></li>
+					{% endfor %}
+				</ul> {% endcomment %}
+
 				
 	</ul>
 	

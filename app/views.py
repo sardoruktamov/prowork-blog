@@ -18,8 +18,6 @@ def homeView(request):
     except EmptyPage:
         page = pgn.page(1)
 
-    
-
     context = {
         'categories':categories,
         'regions': regions,
