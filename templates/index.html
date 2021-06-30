@@ -28,7 +28,7 @@
    
    
     <li>
-                    <form action="{% url 'set_language' %}" method="post">{% csrf_token %}
+                    {% comment %} <form action="{% url 'set_language' %}" method="post">{% csrf_token %}
                         <input name="next" type="hidden" value="">
                         <select name="language">
                             {% get_current_language as LANGUAGE_CODE %}
@@ -42,14 +42,14 @@
                             {% endfor %}
                         </select>
                         <input type="submit" value="Go">
-                    </form>
+                    </form> {% endcomment %}
                 </li>
-				{% comment %} <ul class="list-group" id="list-group">
+				<ul class="list-group" id="list-group">
 					{% for language , title in languages %}
 						<li id="en" onclick="changeSelect('En')" {% if language == LANGUGES_CODE %}{% endif %}>
-							{% get_url_tag request=request lang=language as url %}<a href="{{ url }}">{{ language }}{{ title }}</a></li>
+							{% get_url_tag request=request lang=language as url %}<a href="{{ url }}">{{ language }}</a></li>
 					{% endfor %}
-				</ul> {% endcomment %}
+				</ul>
 
 				
 	</ul>
