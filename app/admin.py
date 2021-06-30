@@ -20,7 +20,7 @@ class RegiosnsAdmin(TranslatableAdmin):
 
 @admin.register(Blog)
 class BlogAdmin(TranslatableAdmin):
-    list_display = ('title', 'category')
+    list_display = ('title', 'category', 'region')
     
 
 
