@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load i18n %} 
+
+{% load static %}
+
+{% block title %}
+    <title>Bizda dunyodagi eng so`ngi yangiliklar</title>
+{% endblock title %}
+
+{% block content %}
+<div class="container">
+	<!-- Top box -->
+		<!-- Logo & Site Name -->
+		<div class="placeholder">
+			<div class="parallax-window" data-parallax="scroll" data-image-src="{% static 'img/simple-house-01.jpg' %}">
+				<div class="tm-header">
+					<div class="row tm-header-inner">
+						<div class="col-md-6 col-12">
+							<img src="{% static 'img/simple-house-logo.png' %}" alt="Logo" class="tm-site-logo" /> 
+							<div class="tm-site-text-box">
+								<h1 class="tm-site-title">{% trans "Texnologiyalar Blogi" %}</h1>
+								<h6 class="tm-site-description">{% trans "Hozirgi zamonning eng songi malumotlari" %}</h6>	
+							</div>
+						</div>
+						<nav class="col-md-6 col-12 tm-nav">
+							<ul class="tm-nav-ul">
+								<li class="tm-nav-li"><a href="/" class="tm-nav-link active">{% trans "BARCHASI" %}</a></li>
+                                {% for cat in all_category %}
+								<li class="tm-nav-li"><a href="{{ cat.get_absolute_url }}" class="tm-nav-link">{{ cat.name }}</a></li>
+                                {% endfor %}
+							</ul>
+						</nav>	
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<main>
+			<header class="row pt-5">
+			</header>
+			
+			<div class="tm-paging-links">
+				<nav>
+					<ul>{% trans "viloyatlar:" %} 
+					{% for region in all_regions %}
+						<li class="tm-paging-item"><a href="#" class="tm-paging-link active">{{region.name}}</a></li>
+					{% endfor %}
+					</ul>
+				</nav>
+			</div>
+			<!-- Gallery -->
+			<div class="container">
+				<!-- gallery page 1 -->
+				<div id="tm-gallery-page-pizza" >
+					<article class="col-lg-12 col-md-12 col-sm-12 col-12">
+						<figure>
+							<img src="{{object.image.url}}" alt="Image" class="img-fluid tm-gallery-img" />
+							<figcaption>
+								<h4 class="tm-gallery-title">{{object.title}}</h4>
+								<p class="tm-gallery-description">{{object.description}}</p>
+								<p class="tm-gallery-price">{{object.created_at}}</p>
+							</figcaption>
+						</figure>
+					</article>
+				</div> <!-- gallery page 1 -->
+				{% for pic in picAdd %}
+				<img src="{{pic.image.url}}" alt="rasm o'rni" class="img-fluid tm-gallery-img" />
+				{% endfor %}
+				<!-- gallery page 3 -->
+			</div>
+		</main>
+{% endblock content %}
+
+		

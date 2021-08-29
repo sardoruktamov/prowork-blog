@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+{% load i18n %} 
+{% load static %}
+{% load app_tags %}
+
+{% get_current_language as LANGUGES_CODE %}
+{% get_available_languages as languages %}
+
+{% block title %}
+    <title>Bizda dunyodagi eng so`ngi yangiliklar</title>
+{% endblock title %}
+
+
+{% block content %}
+{% url 'index' as index %}
+
+<div class="container">
+	<!-- Top box -->
+		<!-- Logo & Site Name -->
+		<div class="placeholder">
+			<div class="parallax-window" data-parallax="scroll" data-image-src="{% static 'img/simple-house-01.jpg' %}">
+				<div class="tm-header">
+					<div class="row tm-header-inner">
+						<div class="col-md-6 col-12">
+							<img src="{% static 'img/simple-house-logo.png' %}" alt="Logo" class="tm-site-logo" /> 
+							<div class="tm-site-text-box">
+							<ul class="list-group" id="list-group">
+   
+   
+    <li>
+                    <form action="{% url 'set_language' %}" method="post">{% csrf_token %}
+                        <input name="next" type="hidden" value="">
+                        <select name="language">
+                            {% get_current_language as LANGUAGE_CODE %}
+                            {% get_available_languages as LANGUAGES %}
+                            {% get_language_info_list for LANGUAGES as languages %}
+                            {% for language in languages %}
+                                <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %}
+                                        selected{% endif %}>
+                                    {{ language.name_local }} ({{ language.code }})
+                                </option>
+                            {% endfor %}
+                        </select>
+                        <input type="submit" value="Go">
+                    </form>
+                </li>
+{#				<ul class="list-group" id="list-group">#}
+{#					{% for language , title in languages %}#}
+{#						<li id="en" onclick="changeSelect('En')" {% if language == LANGUGES_CODE %}{% endif %}>#}
+{#							{% get_url_tag request=request lang=language as url %}<a href="{{ url }}">{{ language.id}}</a></li>#}
+{#					{% endfor %}#}
+{#				</ul>#}
+
+				
+	</ul>
+	
+								<h1 class="tm-site-title">
+								{% trans 'Texnologiyalar Blogi' %}
+								
+								</h1>
+								
+								<h6 class="tm-site-description">{% trans 'Hozirgi zamonning eng songi malumotlari' %}</h6>	
+							</div>
+						</div>
+						<nav class="col-md-6 col-12 tm-nav">
+							<ul class="tm-nav-ul">
+								<li class="tm-nav-li"><a href="/" class="tm-nav-link active">{% trans "BARCHASI" %}</a></li>
+                                {% for cat in all_category %}
+								<li class="tm-nav-li"><a href="{% url 'main_app:categories' cat.slug %}" class="tm-nav-link">{{ cat.name }}</a></li>
+                                {% endfor %}
+							</ul>
+						</nav>	
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<main>
+			<header class="row pt-5">
+			</header>
+			
+			<div class="tm-paging-links">
+				<nav>
+					<ul>{% trans "viloyatlar:" %} 
+					{% for region in all_regions %}
+						<li class="tm-paging-item"><a href="{% url 'main_app:regions' region.slug %}" class="tm-paging-link active">{{region.name}}</a></li>
+					{% endfor %}
+					</ul>
+					{% for tag in hashteg_processor %}
+                            <a href="{{tag.get_absolute_url}}"><button class="btn btn-outline-success">#{{tag.name|title}}</button></a>
+                        {% endfor %}
+				</nav>
+			</div>
+			<!-- Gallery -->
+			<div class="row tm-gallery">
+				<!-- gallery page 1 -->
+				<div id="tm-gallery-page-pizza" class="tm-gallery-page">
+					{% if object_list %}
+					{% for blog in object_list %}
+					<article class="col-lg-3 col-md-4 col-sm-6 col-12 tm-gallery-item">
+						<figure>
+							<img src="{{ blog.image.url }}" alt="Image" height='180px' class="img-fluid tm-gallery-img" />
+							<figcaption>
+								<a href="{{ blog.get_absolute_url }}"<h4 class="tm-gallery-title">{{ blog.title | safe  | truncatechars:50}}</h4></a>
+								<p class="tm-gallery-description">{{blog.description | truncatechars:120}}</p>
+								<p class="tm-gallery-price">{{blog.created_at}}
+								<a href="" style="color: black">hashteg: #{{blog.hashtag}}</a></p>
+								<p></p>
+							</figcaption>
+						</figure>
+					</article>
+					{% endfor %}
+					{% else %}
+						<figure>
+							<figcaption>
+								<h4 class="tm-gallery-title"> {% trans "Post mavjud emas!" %}</h4>
+							</figcaption>
+						</figure>
+					{% endif %}
+				</div> <!-- gallery page 1 -->
+				
+				
+		</main>
+		<section class="container">
+		
+        {% if blogs.has_previous %}
+                <a href="?page={{blogs.previous_page_number}}" class="page-link" aria-label="Previous">
+                    <span aria-hidden="true">
+                        <span class="lnr lnr-chevron-left"><<</span>
+                    </span>
+                </a>{% endif %}
+        
+            {% for i in blogs.paginator.page_range %}
+                {% if blogs.number == i %}
+                <span id="page-item active" style="padding: 4px 12px; color: white; background: #84c1c5">{{ i }} </span>
+                {% elif i > blogs.number|add:'-7' and i < blogs.number|add:'7' %}
+                <a href="?page={{i}}"  id="page-item " class="page-link">{{i}}</a>
+                {% endif %}
+            {% endfor %} 
+            {% if blogs.has_next %}
+                <a href="?page={{blogs.next_page_number}}" class="page-link" aria-label="Next">
+                    <span aria-hidden="true">
+                        <span class="lnr lnr-chevron-right"> >> </span>
+                    </span>
+                </a>
+			{% endif %}
+            
+			</section>
+			
+			</div>
+{% endblock content %}
+
+		

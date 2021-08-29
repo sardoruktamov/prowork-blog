@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load i18n %} 
+{% load static %}
+{% load app_tags %}
+
+{% get_current_language as LANGUGES_CODE %}
+{% get_available_languages as languages %}
+
+{% block title %}
+    <title>Bizda dunyodagi eng so`ngi yangiliklar</title>
+{% endblock title %}
+
+
+{% block content %}
+<div class="container">
+	<!-- Top box -->
+		<!-- Logo & Site Name -->
+		<div class="placeholder">
+			<div class="parallax-window" data-parallax="scroll" data-image-src="{% static 'img/simple-house-01.jpg' %}">
+				<div class="tm-header">
+					<div class="row tm-header-inner">
+						<div class="col-md-6 col-12">
+							<img src="{% static 'img/simple-house-logo.png' %}" alt="Logo" class="tm-site-logo" /> 
+							<div class="tm-site-text-box">
+							<ul class="list-group" id="list-group">
+   
+   
+    <li>
+                    {% comment %} <form action="{% url 'set_language' %}" method="post">{% csrf_token %}
+                        <input name="next" type="hidden" value="">
+                        <select name="language">
+                            {% get_current_language as LANGUAGE_CODE %}
+                            {% get_available_languages as LANGUAGES %}
+                            {% get_language_info_list for LANGUAGES as languages %}
+                            {% for language in languages %}
+                                <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %}
+                                        selected{% endif %}>
+                                    {{ language.name_local }} ({{ language.code }})
+                                </option>
+                            {% endfor %}
+                        </select>
+                        <input type="submit" value="Go">
+                    </form> {% endcomment %}
+                </li>
+				<ul class="list-group" id="list-group">
+					{% for language , title in languages %}
+						<li id="en" onclick="changeSelect('En')" {% if language == LANGUGES_CODE %}{% endif %}>
+							{% get_url_tag request=request lang=language as url %}<a href="{{ url }}">{{ language }}</a></li>
+					{% endfor %}
+				</ul>
+
+				
+	</ul>
+	
+								<h1 class="tm-site-title">
+								{% trans 'Texnologiyalar Blogi' %}
+								
+								</h1>
+								
+								<h6 class="tm-site-description">{% trans 'Hozirgi zamonning eng songi malumotlari' %}</h6>	
+							</div>
+						</div>
+						<nav class="col-md-6 col-12 tm-nav">
+							<ul class="tm-nav-ul">
+								<li class="tm-nav-li"><a href="/" class="tm-nav-link active">{% trans "BARCHASI" %}</a></li>
+                                {% for cat in all_category %}
+								<li class="tm-nav-li"><a href="{{ cat.get_absolute_url }}" class="tm-nav-link">{{ cat.name }}</a></li>
+                                {% endfor %}
+							</ul>
+						</nav>	
+					</div>
+				</div>
+			</div>
+		</div>
+
+ {% for datas in object_list %}
+        <a href="{% url 'main_app:detailview' slug=datas.slug %}">{{ datas.title | safe}}</a><br>
+        {% if datas.image %}<br>
+
+            <img src="{{ datas.image.url }}" alt=""><br>
+        {% endif %}
+        {{ datas.description | safe | truncatechars:100 }}<br>
+    {% endfor %}
+
+{% endblock content %}
